@@ -11,3 +11,6 @@ make -j -C obj_dir/ -f Vcounter.mk Vcounter
 
 # run executable simulation file
 obj_dir/Vcounter
+
+# searches for USB port that Vbuddy is connected to and shares with WSL
+~/Documents/iac/lab0-devtools/tools/attach_usb.sh

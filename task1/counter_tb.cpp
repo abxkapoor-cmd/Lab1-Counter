@@ -6,6 +6,7 @@ int main(int argc, char **argv, char **env){
     int i;
     int clk;
     int pause_remaining = 0;
+    bool just_paused = false;
 
     Verilated::commandArgs(argc, argv);
     //init top verilog instance
@@ -23,14 +24,18 @@ int main(int argc, char **argv, char **env){
 
     
     // run simulation for many clock cycles
+    // counter pauses at 9 for 3 cycles then continues
     for (i=0; i<300; i++){
-        if (pause_remaining>0 || top->count == 9){
+        /* if (pause_remaining>0 || (top->count == 9 &&!just_paused)){
             if (pause_remaining == 0) pause_remaining = 3;           
             top->en = 0;
             pause_remaining--;
-        } else{
+            if (pause_remaining == 0) just_paused = true;
+        }       
+        else{
             top->en = (i>4);
-        }
+            just_paused = false;
+        } */
 
         // dump variables into VCD file and toggle clock
         for (clk=0;clk<2;clk++){
@@ -39,7 +44,8 @@ int main(int argc, char **argv, char **env){
             top->eval ();
         }
 
-        top->rst = (i<2) | (i == 15);
+        top->rst = (i<2|i==15); //remove or i ==15 for pausing at 9 to continue at 10
+        top ->en = (i>4); //comment out this line for pausing at 9
         if (Verilated::gotFinish()) exit(0);
     }
         

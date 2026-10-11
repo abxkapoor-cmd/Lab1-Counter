@@ -9,7 +9,7 @@ module counter #(
 );
 
 // remove posedge rst for synchronous reset
-always_ff @ (posedge clk, posedge rst)
+always_ff @(posedge clk, posedge rst)
     if (rst) count <= {WIDTH{1'b0}};
     else count <= count + {{WIDTH-1{1'b0}}, en};
 
